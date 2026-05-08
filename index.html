@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
 <style>
 :root{--green:#1A9E72;--green-light:#E8F5F0;--green-mid:#0D6E50;--amber:#D4891A;--amber-light:#FDF3E3;--red:#C0392B;--red-light:#FDECEA;--blue:#2C6FAC;--blue-light:#EAF1FA;--bg:#F6F7F5;--bg-card:#fff;--border:rgba(0,0,0,0.08);--border-mid:rgba(0,0,0,0.14);--text:#141414;--text-2:#555;--text-3:#888;--radius:14px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);--shadow-lg:0 2px 8px rgba(0,0,0,0.08),0 12px 32px rgba(0,0,0,0.08);--font:'DM Sans',sans-serif;--display:'DM Serif Display',serif;--t:0.18s cubic-bezier(0.4,0,0.2,1)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -117,6 +118,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 .mact{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
 .empty{text-align:center;padding:40px 20px;color:var(--text-3);font-size:13px}.empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.4}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:3px}
+.score-ring-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-ring{position:relative;width:96px;height:96px}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-track{fill:none;stroke:var(--bg);stroke-width:8}
+.score-ring-fill{fill:none;stroke-width:8;stroke-linecap:round}
+.score-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;line-height:1}
+.score-ring-lbl{font-size:11px;color:var(--text-3);margin-top:6px}
+.fcard{opacity:0;transform:translateY(14px)}
 </style>
 </head>
 <body>
@@ -297,11 +306,20 @@ function aC(n){return n==='alto'?'avG':n==='medio'?'avA':'avR'}
 function sC(s){return s>=60?'var(--green)':s>=40?'var(--amber)':'var(--red)'}
 function mIcon(st){return{done:{c:'mi-d',i:'ti-check'},pending:{c:'mi-p',i:'ti-clock'},current:{c:'mi-p',i:'ti-player-play'},risk:{c:'mi-r',i:'ti-alert-triangle'},future:{c:'mi-f',i:'ti-circle-dashed'}}[st]||{c:'mi-f',i:'ti-circle-dashed'}}
 
+function animCounter(el, target, suffix, duration){
+  if(!el) return;
+  const obj={val:0};
+  anime({targets:obj,val:target,round:1,duration:duration||900,easing:'easeOutExpo',update:()=>{el.textContent=Math.round(obj.val)+(suffix||'')}});
+}
+
 function renderDash(){
-  document.getElementById('kr').textContent=S.pacientes.filter(p=>p.score<40).length;
+  const risco=S.pacientes.filter(p=>p.score<40).length;
   const e=S.pacientes.reduce((a,p)=>a+(p.momentos.filter(m=>m.status==='done').length/p.totalMomentos),0);
-  document.getElementById('kp').textContent=Math.round((e/S.pacientes.length)*100)+'%';
-  document.getElementById('ka').textContent=S.acionamentosHoje||0;
+  const pct=Math.round((e/S.pacientes.length)*100);
+  const ac=S.acionamentosHoje||0;
+  animCounter(document.getElementById('kr'), risco, '', 700);
+  animCounter(document.getElementById('kp'), pct, '%', 1000);
+  animCounter(document.getElementById('ka'), ac, '', 600);
   const al=S.pacientes.filter(p=>p.alertaTipo&&!S.alertasResolvidos.includes(p.id));
   const labels={evasao:'Risco de evasão',renovacao:'Renovação próxima',upsell:'Oportunidade de upsell',protocolo:'Protocolo pendente'};
   const bc={evasao:'br',renovacao:'ba',upsell:'bg',protocolo:'br'};
@@ -331,6 +349,7 @@ function renderFila(){
         <button class="btn btn-s" onclick="openP('${p.id}')"><i class="ti ti-user"></i>Ver perfil</button>
       </div>
     </div>`).join('');
+  anime({targets:'.fcard',opacity:[0,1],translateY:[14,0],delay:anime.stagger(90,{start:40}),duration:420,easing:'easeOutQuart'});
 }
 
 function enviar(id,msgC){
@@ -425,7 +444,16 @@ function renderPerfil(p){
           <span class="pstat"><i class="ti ti-message-2"></i>${p.historico.length} acionamento${p.historico.length!==1?'s':''} registrado${p.historico.length!==1?'s':''}</span>
         </div>
       </div>
-      <div style="text-align:right"><div style="font-size:11px;color:var(--text-3);margin-bottom:4px">score de engajamento</div><div style="font-family:var(--display);font-size:40px;color:${sC(p.score)};line-height:1">${p.score}</div><div style="font-size:11px;color:var(--text-3)">/100</div></div>
+      <div class="score-ring-wrap">
+        <div class="score-ring" id="score-ring-wrap">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle class="score-ring-track" cx="48" cy="48" r="40"/>
+            <circle class="score-ring-fill" id="score-ring-arc" cx="48" cy="48" r="40" stroke="${sC(p.score)}" stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
+          </svg>
+          <div class="score-ring-num" id="score-ring-num" style="color:${sC(p.score)}">0</div>
+        </div>
+        <div class="score-ring-lbl">engajamento</div>
+      </div>
     </div>
     <div class="tabs" id="ptabs">
       <div class="tab active" onclick="switchTab('proto',this)">Protocolo</div>
@@ -455,12 +483,34 @@ function renderPerfil(p){
         </div>
       </div>
     </div>`;
+  requestAnimationFrame(()=>animScoreRing(p.score));
 }
 
 function switchTab(name,el){
   ['proto','hist','analise'].forEach(t=>{const e=document.getElementById('tab-'+t);if(e)e.style.display='none'});
   document.querySelectorAll('#ptabs .tab').forEach(t=>t.classList.remove('active'));
   const tgt=document.getElementById('tab-'+name);if(tgt)tgt.style.display='block';if(el)el.classList.add('active');
+}
+
+function animScoreRing(score){
+  const circumference=251.2;
+  const arc=document.getElementById('score-ring-arc');
+  const num=document.getElementById('score-ring-num');
+  if(!arc||!num) return;
+  const targetOffset=circumference-(score/100)*circumference;
+  const obj={val:0,offset:circumference};
+  anime({
+    targets:obj,
+    val:score,
+    offset:targetOffset,
+    round:1,
+    duration:1100,
+    easing:'easeOutExpo',
+    update:()=>{
+      arc.setAttribute('stroke-dashoffset', obj.offset);
+      num.textContent=Math.round(obj.val);
+    }
+  });
 }
 
 function initCharts(){
@@ -470,7 +520,11 @@ function initCharts(){
   if(c2)new Chart(c2,{type:'doughnut',data:{labels:['Respondeu rápido','Respondeu com atraso','Não respondeu'],datasets:[{data:[58,27,15],backgroundColor:['#1A9E72','#D4891A','#C0392B'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:11,family:'DM Sans'},padding:16,boxWidth:10}}}}});
 }
 
-document.addEventListener('DOMContentLoaded',()=>{renderDash();renderFila();renderAlertas();setTimeout(initCharts,100)});
+document.addEventListener('DOMContentLoaded',()=>{
+  renderDash();renderFila();renderAlertas();
+  setTimeout(initCharts,100);
+  anime({targets:'.kcard',opacity:[0,1],translateY:[10,0],delay:anime.stagger(80,{start:60}),duration:480,easing:'easeOutQuart'});
+});
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
 </script>
 </body>
