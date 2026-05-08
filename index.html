@@ -10,1344 +10,468 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-:root {
-  --green: #1A9E72;
-  --green-light: #E8F5F0;
-  --green-mid: #0D6E50;
-  --green-dark: #074D38;
-  --amber: #D4891A;
-  --amber-light: #FDF3E3;
-  --red: #C0392B;
-  --red-light: #FDECEA;
-  --blue: #2C6FAC;
-  --blue-light: #EAF1FA;
-  --bg: #F6F7F5;
-  --bg-card: #FFFFFF;
-  --border: rgba(0,0,0,0.08);
-  --border-mid: rgba(0,0,0,0.14);
-  --text: #141414;
-  --text-2: #555;
-  --text-3: #888;
-  --sidebar-w: 220px;
-  --radius: 14px;
-  --radius-sm: 8px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
-  --shadow-lg: 0 2px 8px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.08);
-  --font-body: 'DM Sans', sans-serif;
-  --font-display: 'DM Serif Display', serif;
-  --transition: 0.18s cubic-bezier(0.4,0,0.2,1);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  width: var(--sidebar-w);
-  background: #0D1F1A;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.sidebar-logo {
-  padding: 28px 24px 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.logo-mark {
-  font-family: var(--font-display);
-  font-size: 20px;
-  color: #fff;
-  letter-spacing: -0.3px;
-}
-
-.logo-mark span { color: var(--green); }
-
-.logo-sub {
-  font-size: 10px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-top: 3px;
-}
-
-.nav {
-  padding: 16px 12px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.nav-section {
-  font-size: 10px;
-  color: rgba(255,255,255,0.25);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 16px 12px 6px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: rgba(255,255,255,0.5);
-  font-size: 13.5px;
-  font-weight: 400;
-  transition: var(--transition);
-  position: relative;
-  user-select: none;
-}
-
-.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); }
-
-.nav-item.active {
-  background: rgba(26,158,114,0.18);
-  color: #5DCAA5;
-  font-weight: 500;
-}
-
-.nav-item i { font-size: 17px; flex-shrink: 0; }
-
-.nav-badge {
-  margin-left: auto;
-  background: var(--red);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 500;
-  padding: 2px 7px;
-  border-radius: 20px;
-  min-width: 20px;
-  text-align: center;
-}
-
-.nav-badge.green { background: var(--green); }
-
-.sidebar-bottom {
-  padding: 16px 12px 24px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
-
-.user-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.04);
-}
-
-.user-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--green-mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 500;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.user-info { flex: 1; min-width: 0; }
-.user-name { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.user-role { font-size: 10px; color: rgba(255,255,255,0.3); }
-
-/* ── MAIN ── */
-.main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 32px 36px;
-  min-width: 0;
-}
-
-.page { display: none; animation: fadeIn 0.2s ease; }
-.page.active { display: block; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
-/* ── PAGE HEADER ── */
-.page-header { margin-bottom: 28px; }
-.page-title { font-family: var(--font-display); font-size: 26px; color: var(--text); letter-spacing: -0.3px; }
-.page-sub { font-size: 13px; color: var(--text-3); margin-top: 4px; }
-
-/* ── KPI GRID ── */
-.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-
-.kpi-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px 22px;
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition);
-}
-
-.kpi-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--accent, var(--green));
-  border-radius: var(--radius) var(--radius) 0 0;
-}
-
-.kpi-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
-
-.kpi-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
-.kpi-value { font-family: var(--font-display); font-size: 36px; color: var(--text); letter-spacing: -1px; line-height: 1; }
-.kpi-value.green { color: var(--green); }
-.kpi-value.amber { color: var(--amber); }
-.kpi-value.red { color: var(--red); }
-.kpi-sub { font-size: 11px; color: var(--text-3); margin-top: 6px; }
-
-/* ── CARDS ── */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 22px 24px;
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.card-title {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-
-/* ── BADGES ── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
-
-.badge-green { background: var(--green-light); color: var(--green-mid); }
-.badge-amber { background: var(--amber-light); color: var(--amber); }
-.badge-red { background: var(--red-light); color: var(--red); }
-.badge-blue { background: var(--blue-light); color: var(--blue); }
-.badge-gray { background: #F0F0EE; color: var(--text-2); }
-
-/* ── PATIENT ROW ── */
-.patient-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.patient-row:last-child { border-bottom: none; }
-.patient-row:hover { background: var(--bg); margin: 0 -24px; padding: 13px 24px; border-radius: var(--radius-sm); }
-
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-.av-green { background: var(--green-light); color: var(--green-mid); }
-.av-amber { background: var(--amber-light); color: var(--amber); }
-.av-red { background: var(--red-light); color: var(--red); }
-
-.patient-info { flex: 1; min-width: 0; }
-.patient-name { font-size: 13.5px; font-weight: 500; color: var(--text); }
-.patient-meta { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-
-.score-wrap { text-align: right; min-width: 60px; }
-.score-bar-bg { height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
-.score-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
-.score-num { font-size: 11px; color: var(--text-3); }
-
-/* ── FILA DO DIA ── */
-.fila-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px 22px;
-  margin-bottom: 14px;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.fila-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 4px;
-  border-radius: var(--radius) 0 0 var(--radius);
-}
-
-.fila-card.urgente::before { background: var(--red); }
-.fila-card.atencao::before { background: var(--amber); }
-.fila-card.normal::before { background: var(--green); }
-.fila-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
-
-.fila-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.fila-nome { font-size: 15px; font-weight: 500; color: var(--text); }
-.fila-badges { display: flex; gap: 6px; margin-top: 3px; flex-wrap: wrap; }
-.fila-motivo { font-size: 13px; color: var(--text-2); margin-bottom: 12px; line-height: 1.5; }
-
-.msg-box {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  font-size: 13px;
-  color: var(--text-2);
-  line-height: 1.6;
-  font-style: italic;
-  margin-bottom: 14px;
-  position: relative;
-}
-
-.msg-box::before {
-  content: '"';
-  font-family: var(--font-display);
-  font-size: 32px;
-  color: var(--green);
-  position: absolute;
-  top: -4px;
-  left: 10px;
-  line-height: 1;
-  opacity: 0.4;
-}
-
-.msg-text { padding-left: 10px; }
-
-.fila-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 500;
-  font-family: var(--font-body);
-  cursor: pointer;
-  transition: var(--transition);
-  border: none;
-  white-space: nowrap;
-}
-
-.btn-primary { background: var(--green); color: #fff; }
-.btn-primary:hover { background: var(--green-mid); }
-.btn-secondary { background: transparent; color: var(--text-2); border: 1px solid var(--border-mid); }
-.btn-secondary:hover { background: var(--bg); }
-.btn-danger { background: var(--red-light); color: var(--red); border: 1px solid rgba(192,57,43,0.15); }
-.btn-danger:hover { background: var(--red); color: #fff; }
-.btn i { font-size: 15px; }
-
-.btn-icon {
-  width: 34px;
-  height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-3);
-  transition: var(--transition);
-}
-.btn-icon:hover { background: var(--bg); color: var(--text); }
-
-/* ── PERFIL ── */
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--text-3);
-  cursor: pointer;
-  margin-bottom: 24px;
-  transition: var(--transition);
-}
-.back-btn:hover { color: var(--text); }
-
-.profile-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 24px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px 26px;
-  box-shadow: var(--shadow);
-}
-
-.profile-avatar-lg {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-.profile-name { font-family: var(--font-display); font-size: 22px; color: var(--text); letter-spacing: -0.2px; }
-.profile-sub { font-size: 13px; color: var(--text-3); margin-top: 3px; }
-.profile-stats { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
-.profile-stat { font-size: 12px; color: var(--text-2); display: flex; align-items: center; gap: 5px; }
-.profile-stat i { font-size: 14px; }
-
-/* ── PROTOCOLO ── */
-.proto-track {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-
-.proto-seg {
-  flex: 1;
-  height: 6px;
-  border-radius: 3px;
-  transition: var(--transition);
-}
-
-.proto-seg.done { background: var(--green); }
-.proto-seg.current { background: var(--amber); }
-.proto-seg.risk { background: var(--red); }
-.proto-seg.future { background: var(--border); }
-
-.proto-label { font-size: 11px; color: var(--text-3); margin-bottom: 16px; }
-
-.momento-list { display: flex; flex-direction: column; gap: 0; }
-
-.momento-item {
-  display: flex;
-  gap: 14px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.momento-item:last-child { border-bottom: none; }
-
-.momento-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 15px;
-}
-
-.mi-done { background: var(--green-light); color: var(--green); }
-.mi-pending { background: var(--amber-light); color: var(--amber); }
-.mi-risk { background: var(--red-light); color: var(--red); }
-.mi-future { background: var(--bg); color: var(--text-3); }
-
-.momento-label { font-size: 13.5px; font-weight: 500; color: var(--text); }
-.momento-desc { font-size: 12px; color: var(--text-2); margin-top: 3px; line-height: 1.5; }
-.momento-date { font-size: 11px; color: var(--text-3); margin-top: 3px; }
-
-/* ── IA BOX ── */
-.ia-box {
-  background: linear-gradient(135deg, #E8F5F0 0%, #F0FAF6 100%);
-  border: 1px solid rgba(26,158,114,0.2);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  margin-bottom: 16px;
-}
-
-.ia-label {
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--green-mid);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.ia-text { font-size: 13.5px; color: #0D5038; line-height: 1.65; }
-
-/* ── SEARCH ── */
-.search-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  flex: 1;
-  padding: 9px 14px 9px 36px;
-  border: 1px solid var(--border-mid);
-  border-radius: var(--radius-sm);
-  font-size: 13.5px;
-  font-family: var(--font-body);
-  background: var(--bg-card);
-  color: var(--text);
-  outline: none;
-  transition: var(--transition);
-  position: relative;
-}
-
-.search-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,158,114,0.1); }
-
-.search-wrap { position: relative; flex: 1; }
-.search-wrap i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-3); font-size: 16px; pointer-events: none; }
-
-.filter-btn {
-  padding: 9px 14px;
-  border: 1px solid var(--border-mid);
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-family: var(--font-body);
-  background: var(--bg-card);
-  color: var(--text-2);
-  cursor: pointer;
-  transition: var(--transition);
-  font-weight: 400;
-}
-
-.filter-btn:hover { border-color: var(--green); color: var(--green); }
-.filter-btn.active { background: var(--green-light); color: var(--green-mid); border-color: rgba(26,158,114,0.3); font-weight: 500; }
-
-/* ── ALERTAS ── */
-.alert-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-
-/* ── TOAST ── */
-.toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: #0D1F1A;
-  color: #fff;
-  padding: 12px 18px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  box-shadow: var(--shadow-lg);
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transform: translateY(80px);
-  opacity: 0;
-  transition: 0.3s cubic-bezier(0.4,0,0.2,1);
-}
-
-.toast.show { transform: none; opacity: 1; }
-.toast i { color: var(--green); font-size: 16px; }
-
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.2s;
-}
-
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-
-.modal {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 28px 30px;
-  width: 480px;
-  max-width: 95vw;
-  box-shadow: var(--shadow-lg);
-  transform: scale(0.96);
-  transition: 0.2s;
-}
-
-.modal-overlay.open .modal { transform: scale(1); }
-.modal-title { font-family: var(--font-display); font-size: 20px; margin-bottom: 8px; }
-.modal-sub { font-size: 13px; color: var(--text-2); margin-bottom: 20px; }
-.modal-textarea {
-  width: 100%;
-  min-height: 110px;
-  padding: 12px 14px;
-  border: 1px solid var(--border-mid);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  color: var(--text);
-  resize: vertical;
-  outline: none;
-  transition: var(--transition);
-  line-height: 1.6;
-}
-.modal-textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(26,158,114,0.1); }
-.modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
-
-/* ── RESPONSE SIMULATION ── */
-.resposta-box {
-  background: #F0FAF6;
-  border: 1px solid rgba(26,158,114,0.2);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-size: 12.5px;
-  color: var(--green-mid);
-  margin-top: 10px;
-  display: none;
-  animation: fadeIn 0.3s ease;
-}
-
-.resposta-box.show { display: flex; align-items: flex-start; gap: 8px; }
-
-/* ── EMPTY ── */
-.empty { text-align: center; padding: 40px 20px; color: var(--text-3); font-size: 13px; }
-.empty i { font-size: 36px; display: block; margin-bottom: 10px; opacity: 0.4; }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+:root{--green:#1A9E72;--green-light:#E8F5F0;--green-mid:#0D6E50;--amber:#D4891A;--amber-light:#FDF3E3;--red:#C0392B;--red-light:#FDECEA;--blue:#2C6FAC;--blue-light:#EAF1FA;--bg:#F6F7F5;--bg-card:#fff;--border:rgba(0,0,0,0.08);--border-mid:rgba(0,0,0,0.14);--text:#141414;--text-2:#555;--text-3:#888;--radius:14px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);--shadow-lg:0 2px 8px rgba(0,0,0,0.08),0 12px 32px rgba(0,0,0,0.08);--font:'DM Sans',sans-serif;--display:'DM Serif Display',serif;--t:0.18s cubic-bezier(0.4,0,0.2,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:14px;line-height:1.5}
+.sidebar{width:220px;background:#0D1F1A;min-height:100vh;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh}
+.s-logo{padding:28px 24px 24px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.logo-mark{font-family:var(--display);font-size:20px;color:#fff}.logo-mark span{color:var(--green)}
+.logo-sub{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px}
+.nav{padding:16px 12px;flex:1;display:flex;flex-direction:column;gap:2px}
+.nav-sec{font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;text-transform:uppercase;padding:14px 12px 6px}
+.n{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.5);font-size:13.5px;transition:var(--t);user-select:none}
+.n:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.8)}.n.active{background:rgba(26,158,114,0.18);color:#5DCAA5;font-weight:500}.n i{font-size:17px;flex-shrink:0}
+.nbadge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px}
+.s-bot{padding:16px 12px 24px;border-top:1px solid rgba(255,255,255,0.06)}
+.upill{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04)}
+.uav{width:30px;height:30px;border-radius:50%;background:var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff;flex-shrink:0}
+.uname{font-size:12px;color:rgba(255,255,255,0.7);font-weight:500}.urole{font-size:10px;color:rgba(255,255,255,0.3)}
+.main{flex:1;overflow-y:auto;padding:32px 36px;min-width:0}
+.page{display:none;animation:fi .2s ease}.page.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ph{margin-bottom:28px;display:flex;align-items:flex-start;justify-content:space-between}
+.ptitle{font-family:var(--display);font-size:26px;letter-spacing:-0.3px}.psub{font-size:13px;color:var(--text-3);margin-top:4px}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.kcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:var(--t)}
+.kcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--acc,var(--green));border-radius:var(--radius) var(--radius) 0 0}
+.kcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+.klabel{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px}
+.kval{font-family:var(--display);font-size:32px;letter-spacing:-1px;line-height:1}
+.kval.g{color:var(--green)}.kval.a{color:var(--amber)}.kval.r{color:var(--red)}.kval.b{color:var(--blue)}
+.ksub{font-size:11px;color:var(--text-3);margin-top:5px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.card-ttl{font-size:11px;font-weight:500;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px}
+.bg{background:var(--green-light);color:var(--green-mid)}.ba{background:var(--amber-light);color:var(--amber)}.br{background:var(--red-light);color:var(--red)}.bb{background:var(--blue-light);color:var(--blue)}.bgr{background:#F0F0EE;color:var(--text-2)}
+.prow{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:var(--t)}
+.prow:last-child{border-bottom:none}.prow:hover{background:var(--bg);margin:0 -24px;padding:13px 24px;border-radius:var(--radius-sm)}
+.av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.avG{background:var(--green-light);color:var(--green-mid)}.avA{background:var(--amber-light);color:var(--amber)}.avR{background:var(--red-light);color:var(--red)}
+.pinfo{flex:1;min-width:0}.pname{font-size:13.5px;font-weight:500}.pmeta{font-size:12px;color:var(--text-3);margin-top:2px}
+.sbar-w{text-align:right;min-width:60px}.sbar-bg{height:4px;background:var(--bg);border-radius:2px;overflow:hidden;margin-bottom:4px}.sbar-f{height:100%;border-radius:2px;transition:width .6s ease}.snum{font-size:11px;color:var(--text-3)}
+.fcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;box-shadow:var(--shadow);transition:var(--t);position:relative;overflow:hidden}
+.fcard::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:var(--radius) 0 0 var(--radius)}
+.fcard.urgente::before{background:var(--red)}.fcard.atencao::before{background:var(--amber)}.fcard.normal::before{background:var(--green)}
+.fcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+.fhdr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.fname{font-size:15px;font-weight:500}.fbadges{display:flex;gap:6px;margin-top:3px;flex-wrap:wrap}
+.fmotivo{font-size:13px;color:var(--text-2);margin-bottom:12px;line-height:1.5}
+.msgbox{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px 12px 24px;font-size:13px;color:var(--text-2);line-height:1.6;font-style:italic;margin-bottom:14px;position:relative}
+.msgbox::before{content:'"';font-family:var(--display);font-size:32px;color:var(--green);position:absolute;top:-4px;left:8px;line-height:1;opacity:.35}
+.resp-ia{background:var(--green-light);border:1px solid rgba(26,158,114,0.2);border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;display:none;animation:fi .3s ease}
+.resp-ia.show{display:block}.resp-ia-hdr{font-size:10px;font-weight:500;color:var(--green-mid);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.resp-ia-txt{font-size:13px;color:#0D5038;line-height:1.6}.resp-ia-sc{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--green-mid);font-weight:500}
+.campo-r{margin:10px 0;display:none}.campo-r.show{display:block}
+.campo-r textarea{width:100%;padding:10px 12px;border:1px solid var(--border-mid);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;color:var(--text);resize:none;outline:none;min-height:70px;transition:var(--t);line-height:1.5}
+.campo-r textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,158,114,0.1)}.campo-r-act{display:flex;gap:8px;margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;transition:var(--t);border:none;white-space:nowrap}
+.btn-p{background:var(--green);color:#fff}.btn-p:hover{background:var(--green-mid)}
+.btn-s{background:transparent;color:var(--text-2);border:1px solid var(--border-mid)}.btn-s:hover{background:var(--bg)}
+.btn i{font-size:15px}
+.bico{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-3);transition:var(--t)}
+.bico:hover{background:var(--bg);color:var(--text)}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-3);cursor:pointer;margin-bottom:24px;transition:var(--t)}.back-btn:hover{color:var(--text)}
+.prof-hdr{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow)}
+.pav-lg{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:500;flex-shrink:0}
+.prof-name{font-family:var(--display);font-size:22px;letter-spacing:-0.2px}.prof-sub{font-size:13px;color:var(--text-3);margin-top:3px}
+.prof-stats{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}.pstat{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:5px}
+.proto-track{display:flex;gap:6px;margin-bottom:6px}
+.pseg{flex:1;height:6px;border-radius:3px;transition:var(--t)}.pseg.done{background:var(--green)}.pseg.cur{background:var(--amber)}.pseg.risk{background:var(--red)}.pseg.fut{background:var(--border)}
+.proto-lbl{font-size:11px;color:var(--text-3);margin-bottom:16px}
+.mom-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}.mom-item:last-child{border-bottom:none}
+.micon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.mi-d{background:var(--green-light);color:var(--green)}.mi-p{background:var(--amber-light);color:var(--amber)}.mi-r{background:var(--red-light);color:var(--red)}.mi-f{background:var(--bg);color:var(--text-3)}
+.mlabel{font-size:13.5px;font-weight:500}.mpergunta{font-size:12px;color:var(--blue);margin-top:3px;font-style:italic}.mdesc{font-size:12px;color:var(--text-2);margin-top:3px;line-height:1.5}.mdate{font-size:11px;color:var(--text-3);margin-top:3px}
+.hist-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}.hist-item:last-child{border-bottom:none}
+.hicon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;background:var(--blue-light);color:var(--blue)}
+.hinfo{flex:1;min-width:0}.hlabel{font-size:13px;font-weight:500}
+.hmsg{font-size:12px;color:var(--text-2);margin-top:3px;line-height:1.5;font-style:italic}
+.hresp{font-size:12px;color:var(--green-mid);margin-top:4px;display:flex;align-items:flex-start;gap:5px}
+.hia{font-size:11px;color:var(--text-3);margin-top:3px;display:flex;align-items:flex-start;gap:4px}
+.hdate{font-size:11px;color:var(--text-3);white-space:nowrap;margin-top:2px}
+.d7stat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+.d7num{font-family:var(--display);font-size:28px;line-height:1;margin-bottom:4px}.d7lbl{font-size:12px;color:var(--text-3)}
+.d7row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer}.d7row:last-child{border-bottom:none}
+.ia-box{background:linear-gradient(135deg,#E8F5F0,#F0FAF6);border:1px solid rgba(26,158,114,0.2);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
+.ia-lbl{font-size:10px;font-weight:500;color:var(--green-mid);text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.ia-txt{font-size:13.5px;color:#0D5038;line-height:1.65}
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px}
+.tab{padding:10px 18px;font-size:13px;cursor:pointer;color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:var(--t)}.tab:hover{color:var(--text)}.tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:500}
+.search-row{display:flex;gap:10px;margin-bottom:20px}
+.sw{position:relative;flex:1}.sw i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:16px;pointer-events:none}
+.sinput{width:100%;padding:9px 14px 9px 36px;border:1px solid var(--border-mid);border-radius:var(--radius-sm);font-size:13.5px;font-family:var(--font);background:var(--bg-card);color:var(--text);outline:none;transition:var(--t)}
+.sinput:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,158,114,0.1)}
+.fbtn{padding:9px 14px;border:1px solid var(--border-mid);border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);background:var(--bg-card);color:var(--text-2);cursor:pointer;transition:var(--t)}.fbtn:hover{border-color:var(--green);color:var(--green)}.fbtn.active{background:var(--green-light);color:var(--green-mid);border-color:rgba(26,158,114,0.3);font-weight:500}
+.adot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.toast{position:fixed;bottom:24px;right:24px;background:#0D1F1A;color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;box-shadow:var(--shadow-lg);z-index:999;display:flex;align-items:center;gap:8px;transform:translateY(80px);opacity:0;transition:.3s cubic-bezier(.4,0,.2,1)}
+.toast.show{transform:none;opacity:1}.toast i{color:var(--green);font-size:16px}
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:.2s}
+.moverlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg-card);border-radius:var(--radius);padding:28px 30px;width:480px;max-width:95vw;box-shadow:var(--shadow-lg);transform:scale(.96);transition:.2s}
+.moverlay.open .modal{transform:scale(1)}
+.mtitle{font-family:var(--display);font-size:20px;margin-bottom:8px}.msub{font-size:13px;color:var(--text-2);margin-bottom:20px}
+.mta{width:100%;min-height:110px;padding:12px 14px;border:1px solid var(--border-mid);border-radius:var(--radius-sm);font-family:var(--font);font-size:13.5px;color:var(--text);resize:vertical;outline:none;transition:var(--t);line-height:1.6}
+.mta:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,158,114,0.1)}
+.mact{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
+.empty{text-align:center;padding:40px 20px;color:var(--text-3);font-size:13px}.empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.4}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:3px}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
+  <div class="s-logo">
     <div class="logo-mark">Performan<span>CS</span></div>
     <div class="logo-sub">Protocolo de retenção</div>
   </div>
-
   <nav class="nav">
-    <div class="nav-section">Visão</div>
-    <div class="nav-item active" onclick="showPage('dashboard',this)">
-      <i class="ti ti-layout-dashboard"></i> Dashboard
-    </div>
-
-    <div class="nav-section">Operação</div>
-    <div class="nav-item" onclick="showPage('fila',this)">
-      <i class="ti ti-list-check"></i> Fila do dia
-      <span class="nav-badge" id="badge-fila">3</span>
-    </div>
-    <div class="nav-item" onclick="showPage('pacientes',this)">
-      <i class="ti ti-users"></i> Pacientes
-    </div>
-    <div class="nav-item" onclick="showPage('alertas',this)">
-      <i class="ti ti-bell"></i> Alertas
-      <span class="nav-badge" id="badge-alertas">2</span>
-    </div>
+    <div class="nav-sec">Visão</div>
+    <div class="n active" onclick="showPage('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+    <div class="nav-sec">Operação</div>
+    <div class="n" onclick="showPage('fila',this)"><i class="ti ti-list-check"></i>Fila do dia<span class="nbadge" id="badge-fila">3</span></div>
+    <div class="n" onclick="showPage('pacientes',this)"><i class="ti ti-users"></i>Pacientes</div>
+    <div class="n" onclick="showPage('alertas',this)"><i class="ti ti-bell"></i>Alertas<span class="nbadge" id="badge-alertas">2</span></div>
+    <div class="nav-sec">Relatórios</div>
+    <div class="n" onclick="showPage('semana',this)"><i class="ti ti-calendar-week"></i>Últimos 7 dias</div>
   </nav>
-
-  <div class="sidebar-bottom">
-    <div class="user-pill">
-      <div class="user-avatar">CS</div>
-      <div class="user-info">
-        <div class="user-name">Maria Eduarda</div>
-        <div class="user-role">Customer Success</div>
-      </div>
+  <div class="s-bot">
+    <div class="upill">
+      <div class="uav">ME</div>
+      <div><div class="uname">Maria Eduarda</div><div class="urole">Customer Success</div></div>
     </div>
   </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
 
-  <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
-    <div class="page-header">
-      <div class="page-title">Visão geral</div>
-      <div class="page-sub">Protocolo de retenção · Carteira ativa</div>
+    <div class="ph"><div><div class="ptitle">Visão geral</div><div class="psub">Protocolo de retenção · Carteira ativa</div></div></div>
+    <div class="kgrid">
+      <div class="kcard" style="--acc:var(--green)"><div class="klabel">Protocolo executado</div><div class="kval g" id="kp">78%</div><div class="ksub">dos momentos previstos</div></div>
+      <div class="kcard" style="--acc:var(--red)"><div class="klabel">Em risco</div><div class="kval r" id="kr">2</div><div class="ksub">score abaixo de 40</div></div>
+      <div class="kcard" style="--acc:var(--amber)"><div class="klabel">Renovações previstas</div><div class="kval a">2</div><div class="ksub">próximos 30 dias</div></div>
+      <div class="kcard" style="--acc:var(--blue)"><div class="klabel">Acionamentos hoje</div><div class="kval b" id="ka">0</div><div class="ksub">de 3 previstos</div></div>
     </div>
-
-    <div class="kpi-grid">
-      <div class="kpi-card" style="--accent: var(--green)">
-        <div class="kpi-label">Protocolo executado</div>
-        <div class="kpi-value green" id="kpi-protocolo">78%</div>
-        <div class="kpi-sub">dos momentos previstos</div>
-      </div>
-      <div class="kpi-card" style="--accent: var(--red)">
-        <div class="kpi-label">Pacientes em risco</div>
-        <div class="kpi-value red" id="kpi-risco">2</div>
-        <div class="kpi-sub">score abaixo de 40</div>
-      </div>
-      <div class="kpi-card" style="--accent: var(--amber)">
-        <div class="kpi-label">Renovações previstas</div>
-        <div class="kpi-value amber">2</div>
-        <div class="kpi-sub">nos próximos 30 dias</div>
-      </div>
-    </div>
-
     <div class="two-col">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Execução vs resposta do paciente</div>
-        </div>
-        <canvas id="chartProtocolo" height="160"></canvas>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Resultado percebido — média</div>
-        </div>
-        <canvas id="chartNps" height="160"></canvas>
-      </div>
+      <div class="card"><div class="card-hdr"><div class="card-ttl">Execução vs resposta</div></div><canvas id="cP" height="160"></canvas></div>
+      <div class="card"><div class="card-hdr"><div class="card-ttl">Engajamento por resposta</div></div><canvas id="cE" height="160"></canvas></div>
     </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Alertas recentes</div>
-        <button class="btn btn-secondary" onclick="showPage('alertas', document.querySelector('.nav-item:nth-child(5)'))">
-          <i class="ti ti-arrow-right"></i> Ver todos
-        </button>
-      </div>
-      <div id="dashboard-alertas"></div>
-    </div>
+    <div class="card"><div class="card-hdr"><div class="card-ttl">Alertas recentes</div><button class="btn btn-s" onclick="showPage('alertas',document.querySelectorAll('.n')[3])"><i class="ti ti-arrow-right"></i>Ver todos</button></div><div id="dash-alertas"></div></div>
   </div>
 
-  <!-- FILA DO DIA -->
   <div id="page-fila" class="page">
-    <div class="page-header">
-      <div class="page-title">Fila do dia</div>
-      <div class="page-sub" id="fila-sub">3 pacientes para acionar hoje · ordenados por prioridade</div>
-    </div>
+    <div class="ph"><div><div class="ptitle">Fila do dia</div><div class="psub" id="fila-sub">3 pacientes para acionar hoje</div></div></div>
     <div id="fila-list"></div>
   </div>
 
-  <!-- PACIENTES -->
   <div id="page-pacientes" class="page">
-    <div class="page-header">
-      <div class="page-title">Pacientes</div>
-      <div class="page-sub">Carteira ativa de planos de acompanhamento</div>
-    </div>
+    <div class="ph"><div><div class="ptitle">Pacientes</div><div class="psub">Carteira ativa</div></div></div>
     <div class="search-row">
-      <div class="search-wrap">
-        <i class="ti ti-search"></i>
-        <input class="search-input" type="text" placeholder="Buscar paciente..." id="searchInput" oninput="filterPatients()">
-      </div>
-      <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
-      <button class="filter-btn" onclick="setFilter('risco',this)">Em risco</button>
-      <button class="filter-btn" onclick="setFilter('alto',this)">Alto engajamento</button>
+      <div class="sw"><i class="ti ti-search"></i><input class="sinput" type="text" placeholder="Buscar paciente..." id="sinput" oninput="filterP()"></div>
+      <button class="fbtn active" onclick="setF('todos',this)">Todos</button>
+      <button class="fbtn" onclick="setF('risco',this)">Em risco</button>
+      <button class="fbtn" onclick="setF('alto',this)">Alto engajamento</button>
     </div>
-    <div class="card" id="patientList"></div>
+    <div class="card" id="plist"></div>
   </div>
 
-  <!-- ALERTAS -->
   <div id="page-alertas" class="page">
-    <div class="page-header">
-      <div class="page-title">Alertas</div>
-      <div class="page-sub">Ações pendentes identificadas pelo protocolo</div>
-    </div>
-    <div class="card" id="alertas-list"></div>
+    <div class="ph"><div><div class="ptitle">Alertas</div><div class="psub">Ações pendentes identificadas pelo protocolo</div></div></div>
+    <div class="card" id="alist"></div>
   </div>
 
-  <!-- PERFIL -->
+  <div id="page-semana" class="page">
+    <div class="ph"><div><div class="ptitle">Últimos 7 dias</div><div class="psub">Visão consolidada de acionamentos D-7</div></div></div>
+    <div id="semana-c"></div>
+  </div>
+
   <div id="page-perfil" class="page">
-    <div class="back-btn" id="back-btn" onclick="goBack()">
-      <i class="ti ti-arrow-left"></i> voltar
-    </div>
-    <div id="perfilContent"></div>
+    <div class="back-btn" onclick="goBack()"><i class="ti ti-arrow-left"></i>voltar</div>
+    <div id="perfil-c"></div>
   </div>
 
 </main>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <i class="ti ti-check"></i>
-  <span id="toast-msg">Ação realizada</span>
-</div>
-
-<!-- MODAL EDITAR MENSAGEM -->
-<div class="modal-overlay" id="modal">
+<div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg">Ação realizada</span></div>
+<div class="moverlay" id="modal">
   <div class="modal">
-    <div class="modal-title">Editar mensagem</div>
-    <div class="modal-sub">A mensagem será enviada via WhatsApp para o paciente.</div>
-    <textarea class="modal-textarea" id="modal-textarea"></textarea>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="sendFromModal()"><i class="ti ti-brand-whatsapp"></i> Enviar</button>
-    </div>
+    <div class="mtitle">Editar mensagem</div>
+    <div class="msub">A mensagem será enviada via WhatsApp para o paciente.</div>
+    <textarea class="mta" id="mta"></textarea>
+    <div class="mact"><button class="btn btn-s" onclick="closeModal()">Cancelar</button><button class="btn btn-p" onclick="sendModal()"><i class="ti ti-brand-whatsapp"></i>Enviar</button></div>
   </div>
 </div>
 
 <script>
-// ── ESTADO (localStorage) ──
-const DEFAULT_STATE = {
-  pacientes: [
-    {
-      id: 'marcos', name: 'Marcos Nunes', initials: 'MN', score: 91, nivel: 'alto',
-      especialidade: 'Medicina integrativa', inicio: 'Jan 2025', fim: '30 Jun 2025',
-      momento: 5, totalMomentos: 6, alertaTipo: 'upsell',
-      momentos: [
-        { label: 'D+1 — boas-vindas', status: 'done', data: '02 Jan', resposta: 'Respondeu em 1h. Animado para começar.' },
-        { label: 'D+7 — check-in', status: 'done', data: '09 Jan', resposta: 'Respondeu. Sem dúvidas. Resultado percebido: 4/5.' },
-        { label: 'D+15 — check-in', status: 'done', data: '17 Jan', resposta: 'Respondeu. Evolução positiva. Resultado percebido: 5/5.' },
-        { label: 'D+30 — resultado', status: 'done', data: '02 Fev', resposta: 'Respondeu. Muito satisfeito. Resultado percebido: 5/5.' },
-        { label: 'Meio do plano', status: 'current', data: 'Hoje', resposta: 'Aguardando acionamento.' },
-        { label: '30 dias antes do fim', status: 'future', data: 'Jun 2025', resposta: '' },
-      ],
-      ia: 'Marcos está com engajamento excelente — respondeu todos os check-ins e deu nota 5 no último resultado percebido. Plano vence em 90 dias. Momento ideal para apresentar upgrade antes da renovação padrão.',
-      filaStatus: 'normal', filaPrioridade: 3,
-      filaMotivo: 'Momento 5 do protocolo — verificar evolução e preparar argumentos de renovação.',
-      filaMensagem: 'Marcos, chegamos à metade do seu plano e os resultados têm sido incríveis! Queria entender como você está se sentindo e conversar sobre os próximos passos.',
-      filaEnviado: false
-    },
-    {
-      id: 'camila', name: 'Camila Torres', initials: 'CT', score: 74, nivel: 'medio',
-      especialidade: 'Acompanhamento clínico', inicio: 'Fev 2025', fim: '30 Mai 2025',
-      momento: 4, totalMomentos: 6, alertaTipo: 'renovacao',
-      momentos: [
-        { label: 'D+1 — boas-vindas', status: 'done', data: '01 Fev', resposta: 'Respondeu. Algumas dúvidas esclarecidas.' },
-        { label: 'D+7 — check-in', status: 'done', data: '08 Fev', resposta: 'Respondeu com atraso de 2 dias. Resultado percebido: 3/5.' },
-        { label: 'D+15 — check-in', status: 'done', data: '15 Fev', resposta: 'Respondeu. Resultado percebido: 4/5.' },
-        { label: 'D+30 — resultado', status: 'done', data: '03 Mar', resposta: 'Respondeu. Satisfeita. Resultado percebido: 4/5.' },
-        { label: 'Meio do plano', status: 'pending', data: '01 Abr', resposta: 'Aguardando resposta.' },
-        { label: '30 dias antes do fim', status: 'future', data: 'Abr 2025', resposta: '' },
-      ],
-      ia: 'Camila está no momento 5 com plano vencendo em 28 dias. Resultado percebido crescente de 3 para 4. Abordar renovação agora — usar a evolução como argumento principal. Não esperar o vencimento.',
-      filaStatus: 'atencao', filaPrioridade: 2,
-      filaMotivo: 'Plano vence em 28 dias. Momento ideal para abordar renovação com base nos resultados obtidos.',
-      filaMensagem: 'Camila, estamos chegando na reta final do seu plano e os resultados têm sido ótimos! Quero conversar sobre como manter essa evolução — quando você tem um momento?',
-      filaEnviado: false
-    },
-    {
-      id: 'leticia', name: 'Letícia Melo', initials: 'LM', score: 52, nivel: 'medio',
-      especialidade: 'Medicina integrativa', inicio: 'Abr 2025', fim: '30 Out 2025',
-      momento: 1, totalMomentos: 6, alertaTipo: 'protocolo',
-      momentos: [
-        { label: 'D+1 — boas-vindas', status: 'pending', data: 'Pendente', resposta: 'Contato ainda não realizado. Janela crítica.' },
-        { label: 'D+7 — check-in', status: 'future', data: 'Previsto: 04 Mai', resposta: '' },
-        { label: 'D+15 — check-in', status: 'future', data: 'Previsto: 12 Mai', resposta: '' },
-        { label: 'D+30 — resultado', status: 'future', data: 'Previsto: 27 Mai', resposta: '' },
-        { label: 'Meio do plano', status: 'future', data: 'Previsto: Jul 2025', resposta: '' },
-        { label: '30 dias antes do fim', status: 'future', data: 'Previsto: Set 2025', resposta: '' },
-      ],
-      ia: 'Letícia assinou o plano há 6 dias e o contato de D+1 ainda não foi feito. Janela de vulnerabilidade pós-venda em aberto — esse é o momento mais crítico. Acionar hoje para blindar a decisão de compra antes que a dúvida cresça.',
-      filaStatus: 'normal', filaPrioridade: 4,
-      filaMotivo: 'Onboarding D+1 pendente. Pagamento confirmado há 6 dias sem contato.',
-      filaMensagem: 'Letícia, bem-vinda ao seu plano de acompanhamento! Já faz alguns dias desde o início e queria saber como você está se sentindo. Tem alguma dúvida sobre o que foi orientado?',
-      filaEnviado: false
-    },
-    {
-      id: 'roberto', name: 'Roberto Alves', initials: 'RA', score: 29, nivel: 'baixo',
-      especialidade: 'Acompanhamento clínico', inicio: 'Jan 2025', fim: '08 Mai 2025',
-      momento: 3, totalMomentos: 6, alertaTipo: 'evasao',
-      momentos: [
-        { label: 'D+1 — boas-vindas', status: 'done', data: '03 Jan', resposta: 'Respondeu. Sem dúvidas.' },
-        { label: 'D+7 — check-in', status: 'done', data: '10 Jan', resposta: 'Respondeu com 3 dias de atraso. Resultado percebido: 3/5.' },
-        { label: 'D+15 — check-in', status: 'risk', data: '18 Jan', resposta: 'Não respondeu. Consulta cancelada sem remarcação.' },
-        { label: 'D+30 — resultado', status: 'future', data: 'Previsto: 03 Fev', resposta: '' },
-        { label: 'Meio do plano', status: 'future', data: 'Previsto: Mar 2025', resposta: '' },
-        { label: '30 dias antes do fim', status: 'future', data: 'Previsto: Abr 2025', resposta: '' },
-      ],
-      ia: 'Roberto está em risco crítico. Não respondeu o check-in de 15 dias e cancelou consulta sem remarcar. Plano vence em 11 dias. Contato urgente — mensagem humanizada focada em entender o que aconteceu, não em cobrar.',
-      filaStatus: 'urgente', filaPrioridade: 1,
-      filaMotivo: 'Não respondeu check-in de 15 dias. Cancelou consulta sem remarcar. Plano vence em 11 dias.',
-      filaMensagem: 'Roberto, percebi que você não conseguiu vir na última consulta e não recebi sua resposta. Quero entender como você está se sentindo com o tratamento — tem algo que eu possa ajudar?',
-      filaEnviado: false
-    }
+const DS={
+  pacientes:[
+    {id:'marcos',name:'Marcos Nunes',initials:'MN',score:91,nivel:'alto',especialidade:'Medicina integrativa',inicio:'Jan 2025',fim:'30 Jun 2025',momento:5,totalMomentos:6,alertaTipo:'upsell',
+     momentos:[
+       {label:'D+1 — boas-vindas',status:'done',data:'02 Jan',pergunta:'Como você está se sentindo em relação ao início do tratamento? Tem alguma dúvida?',resposta:'Respondeu em 1h. Animado e sem dúvidas.',respostaIA:'Engajamento alto. Tom positivo e proativo. Sem sinais de insegurança pós-compra.'},
+       {label:'D+7 — check-in',status:'done',data:'09 Jan',pergunta:'Você conseguiu seguir as orientações essa semana?',resposta:'Respondeu: "Sim, seguindo direitinho! Só tive dificuldade com a alimentação no fim de semana."',respostaIA:'Adesão boa. Mencionou dificuldade pontual — sem sinal de desistência. Engajamento alto.'},
+       {label:'D+15 — check-in',status:'done',data:'17 Jan',pergunta:'O que foi mais difícil até agora?',resposta:'Respondeu: "No começo foi difícil ajustar a rotina, mas agora tá fluindo."',respostaIA:'Superou barreira inicial. Risco de abandono baixo nesse ponto.'},
+       {label:'D+30 — resultado percebido',status:'done',data:'02 Fev',pergunta:'Você já percebeu alguma diferença desde que começou?',resposta:'Respondeu: "Sim! Tô dormindo muito melhor e com mais energia."',respostaIA:'Resultado percebido alto. Paciente âncora para renovação e upsell.'},
+       {label:'Meio do plano',status:'current',data:'Hoje',pergunta:'Olhando para o caminho percorrido até aqui, como você se sente em relação ao tratamento?',resposta:'',respostaIA:''},
+       {label:'30 dias antes do fim',status:'future',data:'Jun 2025',pergunta:'Seu plano está próximo do fim. O que você sentiu de mais impactante nesse período?',resposta:'',respostaIA:''},
+     ],
+     ia:'Marcos está com engajamento excelente — respondeu todos os check-ins com entusiasmo e relatou resultado percebido claro. Plano vence em 90 dias. Momento ideal para apresentar upgrade antes da renovação padrão.',
+     filaStatus:'normal',filaPrioridade:3,filaMotivo:'Momento 5 do protocolo — verificar evolução e preparar argumentos de renovação.',
+     filaMensagem:'Marcos, chegamos à metade do seu plano! Olhando para o caminho percorrido até aqui, como você se sente em relação ao tratamento?',filaEnviado:false,historico:[]},
+    {id:'camila',name:'Camila Torres',initials:'CT',score:74,nivel:'medio',especialidade:'Acompanhamento clínico',inicio:'Fev 2025',fim:'30 Mai 2025',momento:4,totalMomentos:6,alertaTipo:'renovacao',
+     momentos:[
+       {label:'D+1 — boas-vindas',status:'done',data:'01 Fev',pergunta:'Como você está se sentindo em relação ao início do tratamento? Tem alguma dúvida?',resposta:'Respondeu. Algumas dúvidas sobre orientações esclarecidas.',respostaIA:'Engajamento médio. Dúvidas operacionais — sem insegurança na decisão.'},
+       {label:'D+7 — check-in',status:'done',data:'08 Fev',pergunta:'Você conseguiu seguir as orientações essa semana?',resposta:'Respondeu com 2 dias de atraso: "Parcialmente, tive uma semana corrida."',respostaIA:'Adesão parcial. Respondeu com atraso. Monitorar próximo check-in.'},
+       {label:'D+15 — check-in',status:'done',data:'15 Fev',pergunta:'O que foi mais difícil até agora?',resposta:'Respondeu: "A dieta nos fins de semana, mas tô me esforçando."',respostaIA:'Manutenção do esforço apesar da dificuldade. Sinal positivo de comprometimento.'},
+       {label:'D+30 — resultado percebido',status:'done',data:'03 Mar',pergunta:'Você já percebeu alguma diferença desde que começou?',resposta:'Respondeu: "Sim, sinto que estou melhor, mas ainda quero ver mais resultados."',respostaIA:'Resultado percebido moderado. Expectativa ainda alta — abordar renovação com dados concretos.'},
+       {label:'Meio do plano',status:'pending',data:'Pendente',pergunta:'Olhando para o caminho percorrido até aqui, como você se sente em relação ao tratamento?',resposta:'',respostaIA:''},
+       {label:'30 dias antes do fim',status:'future',data:'Abr 2025',pergunta:'Seu plano está próximo do fim. O que você sentiu de mais impactante nesse período?',resposta:'',respostaIA:''},
+     ],
+     ia:'Camila está no momento 5 com plano vencendo em 28 dias. Resultado percebido moderado — expectativa ainda alta. Abordar renovação agora mostrando evolução concreta. Não esperar o vencimento.',
+     filaStatus:'atencao',filaPrioridade:2,filaMotivo:'Plano vence em 28 dias. Momento ideal para abordar renovação antes que vire urgência.',
+     filaMensagem:'Camila, estamos chegando na reta final do seu plano! Olhando para o caminho percorrido, como você se sente em relação ao tratamento até agora?',filaEnviado:false,historico:[]},
+    {id:'leticia',name:'Letícia Melo',initials:'LM',score:52,nivel:'medio',especialidade:'Medicina integrativa',inicio:'Abr 2025',fim:'30 Out 2025',momento:1,totalMomentos:6,alertaTipo:'protocolo',
+     momentos:[
+       {label:'D+1 — boas-vindas',status:'pending',data:'Pendente — 6 dias em aberto',pergunta:'Como você está se sentindo em relação ao início do tratamento? Tem alguma dúvida?',resposta:'',respostaIA:''},
+       {label:'D+7 — check-in',status:'future',data:'Previsto: 04 Mai',pergunta:'Você conseguiu seguir as orientações essa semana?',resposta:'',respostaIA:''},
+       {label:'D+15 — check-in',status:'future',data:'Previsto: 12 Mai',pergunta:'O que foi mais difícil até agora?',resposta:'',respostaIA:''},
+       {label:'D+30 — resultado percebido',status:'future',data:'Previsto: 27 Mai',pergunta:'Você já percebeu alguma diferença desde que começou?',resposta:'',respostaIA:''},
+       {label:'Meio do plano',status:'future',data:'Previsto: Jul 2025',pergunta:'Olhando para o caminho percorrido até aqui, como você se sente em relação ao tratamento?',resposta:'',respostaIA:''},
+       {label:'30 dias antes do fim',status:'future',data:'Previsto: Set 2025',pergunta:'Seu plano está próximo do fim. O que você sentiu de mais impactante nesse período?',resposta:'',respostaIA:''},
+     ],
+     ia:'Letícia assinou o plano há 6 dias e o contato D+1 ainda não foi feito. Janela de vulnerabilidade pós-venda em aberto — o paciente está sozinho com a decisão. Acionar hoje.',
+     filaStatus:'normal',filaPrioridade:4,filaMotivo:'Onboarding D+1 pendente há 6 dias. Janela crítica de vulnerabilidade pós-venda.',
+     filaMensagem:'Letícia, bem-vinda ao seu plano de acompanhamento! Já faz alguns dias desde o início — como você está se sentindo? Tem alguma dúvida sobre o que foi orientado?',filaEnviado:false,historico:[]},
+    {id:'roberto',name:'Roberto Alves',initials:'RA',score:29,nivel:'baixo',especialidade:'Acompanhamento clínico',inicio:'Jan 2025',fim:'08 Mai 2025',momento:3,totalMomentos:6,alertaTipo:'evasao',
+     momentos:[
+       {label:'D+1 — boas-vindas',status:'done',data:'03 Jan',pergunta:'Como você está se sentindo em relação ao início do tratamento? Tem alguma dúvida?',resposta:'Respondeu. Tom neutro, sem dúvidas.',respostaIA:'Engajamento médio. Respondeu mas sem entusiasmo — monitorar próximo contato.'},
+       {label:'D+7 — check-in',status:'done',data:'10 Jan',pergunta:'Você conseguiu seguir as orientações essa semana?',resposta:'Respondeu com 3 dias de atraso: "Tentei, mas tive uns problemas."',respostaIA:'Adesão baixa. Atraso + dificuldades vagas. Sinal amarelo. Próximo check-in crítico.'},
+       {label:'D+15 — check-in',status:'risk',data:'18 Jan',pergunta:'O que foi mais difícil até agora?',resposta:'Não respondeu. Consulta cancelada sem remarcação.',respostaIA:'Silêncio + cancelamento = risco real de abandono. Ação imediata necessária.'},
+       {label:'D+30 — resultado percebido',status:'future',data:'Previsto',pergunta:'Você já percebeu alguma diferença desde que começou?',resposta:'',respostaIA:''},
+       {label:'Meio do plano',status:'future',data:'Previsto',pergunta:'Olhando para o caminho percorrido até aqui, como você se sente em relação ao tratamento?',resposta:'',respostaIA:''},
+       {label:'30 dias antes do fim',status:'future',data:'Previsto',pergunta:'Seu plano está próximo do fim. O que você sentiu de mais impactante nesse período?',resposta:'',respostaIA:''},
+     ],
+     ia:'Roberto está em risco crítico. Silêncio no check-in de 15 dias, consulta cancelada sem remarcar, plano vence em 11 dias. Mensagem humanizada — foco em entender o que aconteceu, não cobrar.',
+     filaStatus:'urgente',filaPrioridade:1,filaMotivo:'Não respondeu check-in de 15 dias. Cancelou consulta sem remarcar. Plano vence em 11 dias.',
+     filaMensagem:'Roberto, percebi que você não conseguiu vir na última consulta. Quero entender como você está se sentindo com o tratamento — tem algo que aconteceu que eu possa ajudar?',filaEnviado:false,historico:[]}
   ],
-  alertasResolvidos: []
+  alertasResolvidos:[],acionamentosHoje:0
 };
 
-function getState() {
-  try {
-    const saved = localStorage.getItem('performancs_state');
-    return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_STATE));
-  } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_STATE)); }
+const RESPS={marcos:'Oi! Tô me sentindo muito bem! Os resultados têm aparecido. Podemos conversar sobre os próximos passos sim.',camila:'Olá! Estou me sentindo bem. Ainda quero ver mais progresso. Podemos falar amanhã?',leticia:'Oi! Obrigada pelo contato! Tô adorando, mas tenho uma dúvida sobre a alimentação no final de semana...',roberto:'Olá... É que tive uns problemas no trabalho e acabei deixando de lado. Me sinto mal por isso.'};
+const IAS={marcos:'Resposta positiva e proativa. Tom de entusiasmo — sem sinais de arrependimento. Engajamento alto.',camila:'Resposta moderada. Ainda quer ver mais resultados. Abordar renovação com dados concretos de evolução.',leticia:'Respondeu com dúvida prática sobre orientações. Sinal positivo — está tentando seguir o protocolo. Encaminhar para equipe clínica.',roberto:'Tom de culpa e desengajamento. Mencionou problema externo (trabalho). Há abertura — não é abandono definitivo. Agendar ligação humanizada.'};
+
+function getS(){try{const s=localStorage.getItem('pcs3');return s?JSON.parse(s):JSON.parse(JSON.stringify(DS))}catch(e){return JSON.parse(JSON.stringify(DS))}}
+function saveS(s){localStorage.setItem('pcs3',JSON.stringify(s))}
+
+let S=getS(),cBack='dashboard',cFilter='todos',mCb=null;
+
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.n').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(el&&el.classList)el.classList.add('active');
+  const r={pacientes:renderPac,fila:renderFila,alertas:renderAlertas,semana:renderSemana};
+  if(r[name])r[name]();
 }
 
-function saveState(state) {
-  localStorage.setItem('performancs_state', JSON.stringify(state));
-}
+function goBack(){const ni=document.querySelectorAll('.n');const m={dashboard:0,fila:1,pacientes:2,alertas:3,semana:4};showPage(cBack,ni[m[cBack]]||ni[0])}
 
-function resetState() {
-  localStorage.removeItem('performancs_state');
-  location.reload();
-}
-
-let STATE = getState();
-
-// ── NAVIGATION ──
-let currentBack = 'dashboard';
-let currentFilter = 'todos';
-
-function showPage(name, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  if (el && el.classList) el.classList.add('active');
-  if (name === 'pacientes') renderPatientList();
-  if (name === 'fila') renderFila();
-  if (name === 'alertas') renderAlertas();
-}
-
-function goBack() {
-  const navMap = { dashboard: 0, fila: 1, pacientes: 2, alertas: 3 };
-  const nav = document.querySelectorAll('.nav-item');
-  showPage(currentBack, nav[navMap[currentBack]] || nav[0]);
-}
-
-function openPatient(id) {
-  currentBack = document.querySelector('.page.active').id.replace('page-', '');
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+function openP(id){
+  cBack=document.querySelector('.page.active').id.replace('page-','');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-perfil').classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const p = STATE.pacientes.find(x => x.id === id);
-  if (p) renderPerfil(p);
+  document.querySelectorAll('.n').forEach(n=>n.classList.remove('active'));
+  const p=S.pacientes.find(x=>x.id===id);if(p)renderPerfil(p);
 }
 
-// ── TOAST ──
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+function openModal(msg,cb){document.getElementById('mta').value=msg;mCb=cb;document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open');mCb=null}
+function sendModal(){const msg=document.getElementById('mta').value;closeModal();if(mCb)mCb(msg)}
+
+function nL(n){return n==='alto'?'alto':n==='medio'?'médio':'baixo'}
+function bC(n){return n==='alto'?'bg':n==='medio'?'ba':'br'}
+function aC(n){return n==='alto'?'avG':n==='medio'?'avA':'avR'}
+function sC(s){return s>=60?'var(--green)':s>=40?'var(--amber)':'var(--red)'}
+function mIcon(st){return{done:{c:'mi-d',i:'ti-check'},pending:{c:'mi-p',i:'ti-clock'},current:{c:'mi-p',i:'ti-player-play'},risk:{c:'mi-r',i:'ti-alert-triangle'},future:{c:'mi-f',i:'ti-circle-dashed'}}[st]||{c:'mi-f',i:'ti-circle-dashed'}}
+
+function renderDash(){
+  document.getElementById('kr').textContent=S.pacientes.filter(p=>p.score<40).length;
+  const e=S.pacientes.reduce((a,p)=>a+(p.momentos.filter(m=>m.status==='done').length/p.totalMomentos),0);
+  document.getElementById('kp').textContent=Math.round((e/S.pacientes.length)*100)+'%';
+  document.getElementById('ka').textContent=S.acionamentosHoje||0;
+  const al=S.pacientes.filter(p=>p.alertaTipo&&!S.alertasResolvidos.includes(p.id));
+  const labels={evasao:'Risco de evasão',renovacao:'Renovação próxima',upsell:'Oportunidade de upsell',protocolo:'Protocolo pendente'};
+  const bc={evasao:'br',renovacao:'ba',upsell:'bg',protocolo:'br'};
+  const dc={evasao:'var(--red)',renovacao:'var(--amber)',upsell:'var(--green)',protocolo:'var(--red)'};
+  const dd={evasao:p=>`Score ${p.score}. Momento ${p.momento} em risco.`,renovacao:p=>`Plano vence em breve. Score ${p.score}.`,upsell:p=>`Alta adesão. Score ${p.score}.`,protocolo:()=>'Onboarding pendente há 6 dias.'};
+  const el=document.getElementById('dash-alertas');
+  if(!al.length){el.innerHTML='<div class="empty"><i class="ti ti-circle-check"></i>Nenhum alerta pendente.</div>';return}
+  el.innerHTML=al.slice(0,3).map(p=>`<div class="prow" onclick="openP('${p.id}')"><div class="adot" style="background:${dc[p.alertaTipo]}"></div><div class="pinfo"><div class="pname">${labels[p.alertaTipo]} — ${p.name}</div><div class="pmeta">${dd[p.alertaTipo](p)}</div></div><span class="badge ${bc[p.alertaTipo]}">${labels[p.alertaTipo]}</span></div>`).join('');
 }
 
-// ── MODAL ──
-let modalCallback = null;
-
-function openModal(msg, cb) {
-  document.getElementById('modal-textarea').value = msg;
-  modalCallback = cb;
-  document.getElementById('modal').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-  modalCallback = null;
-}
-
-function sendFromModal() {
-  const msg = document.getElementById('modal-textarea').value;
-  closeModal();
-  if (modalCallback) modalCallback(msg);
-}
-
-// ── HELPERS ──
-function nivelLabel(n) { return n === 'alto' ? 'alto' : n === 'medio' ? 'médio' : 'baixo'; }
-function badgeClass(n) { return n === 'alto' ? 'badge-green' : n === 'medio' ? 'badge-amber' : 'badge-red'; }
-function avClass(n) { return n === 'alto' ? 'av-green' : n === 'medio' ? 'av-amber' : 'av-red'; }
-function scoreColor(s) { return s >= 60 ? 'var(--green)' : s >= 40 ? 'var(--amber)' : 'var(--red)'; }
-
-function momentoIcon(status) {
-  const map = {
-    done: { cls: 'mi-done', icon: 'ti-check' },
-    pending: { cls: 'mi-pending', icon: 'ti-clock' },
-    current: { cls: 'mi-pending', icon: 'ti-player-play' },
-    risk: { cls: 'mi-risk', icon: 'ti-alert-triangle' },
-    future: { cls: 'mi-future', icon: 'ti-circle-dashed' }
-  };
-  return map[status] || map.future;
-}
-
-// ── DASHBOARD ──
-function renderDashboard() {
-  const alertas = STATE.pacientes.filter(p => p.alertaTipo && !STATE.alertasResolvidos.includes(p.id));
-  const em_risco = STATE.pacientes.filter(p => p.score < 40).length;
-  document.getElementById('kpi-risco').textContent = em_risco;
-
-  const exec = STATE.pacientes.reduce((acc, p) => {
-    const done = p.momentos.filter(m => m.status === 'done').length;
-    return acc + (done / p.totalMomentos);
-  }, 0);
-  const pct = Math.round((exec / STATE.pacientes.length) * 100);
-  document.getElementById('kpi-protocolo').textContent = pct + '%';
-
-  const el = document.getElementById('dashboard-alertas');
-  if (!alertas.length) {
-    el.innerHTML = '<div class="empty"><i class="ti ti-circle-check"></i>Nenhum alerta pendente. Boa semana!</div>';
-    return;
-  }
-  el.innerHTML = alertas.slice(0, 3).map(p => {
-    const colors = { evasao: 'var(--red)', renovacao: 'var(--amber)', upsell: 'var(--green)', protocolo: 'var(--red)' };
-    const labels = { evasao: 'Risco de evasão', renovacao: 'Renovação próxima', upsell: 'Oportunidade de upsell', protocolo: 'Protocolo pendente' };
-    const descs = {
-      evasao: `Score ${p.score}. Momento ${p.momento} em risco. Plano vence em breve.`,
-      renovacao: `Plano vence em 28 dias. Score ${p.score}. Resultado percebido crescente.`,
-      upsell: `Alta adesão. Respondeu todos os check-ins. Score ${p.score}.`,
-      protocolo: `Contato D+1 não realizado. Janela de vulnerabilidade aberta.`
-    };
-    return `<div class="patient-row" onclick="openPatient('${p.id}')">
-      <div class="alert-dot" style="background:${colors[p.alertaTipo]}"></div>
-      <div class="patient-info">
-        <div class="patient-name">${labels[p.alertaTipo]} — ${p.name}</div>
-        <div class="patient-meta">${descs[p.alertaTipo]}</div>
+function renderFila(){
+  const pend=S.pacientes.filter(p=>!p.filaEnviado).sort((a,b)=>a.filaPrioridade-b.filaPrioridade);
+  const b=document.getElementById('badge-fila');b.textContent=pend.length;b.style.display=pend.length?'':'none';
+  document.getElementById('fila-sub').textContent=pend.length?`${pend.length} paciente${pend.length>1?'s':''} para acionar hoje · ordenados por prioridade`:'Fila do dia completa!';
+  const el=document.getElementById('fila-list');
+  if(!pend.length){el.innerHTML=`<div class="card"><div class="empty"><i class="ti ti-circle-check"></i>Todos os acionamentos do dia foram realizados.</div></div>`;return}
+  el.innerHTML=pend.map(p=>`
+    <div class="fcard ${p.filaStatus}" id="fc-${p.id}">
+      <div class="fhdr"><div class="av ${aC(p.nivel)}">${p.initials}</div><div><div class="fname">${p.name}</div><div class="fbadges"><span class="badge ${p.filaStatus==='urgente'?'br':p.filaStatus==='atencao'?'ba':'bg'}">${p.filaStatus==='urgente'?'urgente':p.filaStatus==='atencao'?'atenção':'normal'}</span><span class="badge bb">momento ${p.momento}/${p.totalMomentos}</span><span class="badge bgr">score ${p.score}</span></div></div></div>
+      <div class="fmotivo"><i class="ti ti-info-circle" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>${p.filaMotivo}</div>
+      <div class="msgbox">${p.filaMensagem}</div>
+      <div class="resp-ia" id="ri-${p.id}"><div class="resp-ia-hdr"><i class="ti ti-brain"></i>Resposta do paciente — análise da IA</div><div class="resp-ia-txt" id="ri-txt-${p.id}"></div><div class="resp-ia-sc" id="ri-sc-${p.id}"></div></div>
+      <div class="campo-r" id="cr-${p.id}"><textarea placeholder="Cole aqui o que o paciente respondeu para a IA analisar..." id="cr-txt-${p.id}"></textarea><div class="campo-r-act"><button class="btn btn-p" onclick="analisarR('${p.id}')"><i class="ti ti-brain"></i>Analisar com IA</button><button class="btn btn-s" onclick="document.getElementById('cr-${p.id}').classList.remove('show')">Cancelar</button></div></div>
+      <div id="fa-${p.id}" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-p" onclick="enviar('${p.id}')"><i class="ti ti-brand-whatsapp"></i>Enviar</button>
+        <button class="btn btn-s" onclick="editarMsg('${p.id}')"><i class="ti ti-edit"></i>Editar</button>
+        <button class="btn btn-s" onclick="openP('${p.id}')"><i class="ti ti-user"></i>Ver perfil</button>
       </div>
-      <span class="badge ${p.alertaTipo === 'evasao' || p.alertaTipo === 'protocolo' ? 'badge-red' : p.alertaTipo === 'renovacao' ? 'badge-amber' : 'badge-green'}">${labels[p.alertaTipo]}</span>
-    </div>`;
-  }).join('');
+    </div>`).join('');
 }
 
-// ── FILA ──
-function renderFila() {
-  const pendentes = STATE.pacientes
-    .filter(p => !p.filaEnviado)
-    .sort((a, b) => a.filaPrioridade - b.filaPrioridade);
+function enviar(id,msgC){
+  const p=S.pacientes.find(x=>x.id===id);if(!p)return;
+  const msg=msgC||p.filaMensagem;
+  const now=new Date();
+  p.historico.push({tipo:'enviado',msg,data:now.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}),hora:now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),resposta:'',respostaIA:'',momentoLabel:p.momentos[p.momento-1]?.label||'Acionamento'});
+  S.acionamentosHoje=(S.acionamentosHoje||0)+1;
+  saveS(S);
+  const fa=document.getElementById(`fa-${id}`);
+  if(fa)fa.innerHTML=`<button class="btn btn-s" onclick="document.getElementById('cr-${id}').classList.add('show')"><i class="ti ti-message-2"></i>Registrar resposta</button><button class="btn btn-s" onclick="concluir('${id}')"><i class="ti ti-check"></i>Concluir sem resposta</button>`;
+  toast(`Mensagem enviada para ${p.name}`);renderDash();
+}
 
-  const badge = document.getElementById('badge-fila');
-  badge.textContent = pendentes.length;
-  badge.style.display = pendentes.length ? '' : 'none';
+function analisarR(id){
+  const p=S.pacientes.find(x=>x.id===id);if(!p)return;
+  const txt=document.getElementById(`cr-txt-${id}`)?.value?.trim();
+  if(!txt){toast('Cole a resposta do paciente antes de analisar');return}
+  const ia=IAS[id]||'Resposta registrada. Monitorar próximo contato.';
+  const riEl=document.getElementById(`ri-${id}`);
+  const riTxt=document.getElementById(`ri-txt-${id}`);
+  const riSc=document.getElementById(`ri-sc-${id}`);
+  if(riEl&&riTxt&&riSc){riTxt.textContent=`"${txt}" — ${ia}`;const sc={marcos:'Engajamento: alto',camila:'Engajamento: médio',leticia:'Engajamento: médio — encaminhar dúvida',roberto:'Engajamento: baixo — agendar ligação'};riSc.innerHTML=`<i class="ti ti-brain" style="font-size:14px"></i>${sc[id]||'Engajamento: registrado'}`;riEl.classList.add('show')}
+  if(p.historico.length){p.historico[p.historico.length-1].resposta=txt;p.historico[p.historico.length-1].respostaIA=ia;}
+  document.getElementById(`cr-${id}`)?.classList.remove('show');
+  saveS(S);toast('Resposta analisada pela IA');
+}
 
-  document.getElementById('fila-sub').textContent =
-    pendentes.length
-      ? `${pendentes.length} paciente${pendentes.length > 1 ? 's' : ''} para acionar hoje · ordenados por prioridade`
-      : 'Todos os acionamentos do dia foram realizados';
+function editarMsg(id){const p=S.pacientes.find(x=>x.id===id);if(!p)return;openModal(p.filaMensagem,(msg)=>{p.filaMensagem=msg;saveS(S);enviar(id,msg);})}
 
-  const el = document.getElementById('fila-list');
-  if (!pendentes.length) {
-    el.innerHTML = `<div class="card"><div class="empty"><i class="ti ti-circle-check"></i>Fila do dia completa! Todos os pacientes foram acionados.</div></div>`;
-    return;
-  }
+function concluir(id){
+  const p=S.pacientes.find(x=>x.id===id);if(p){p.filaEnviado=true;saveS(S);}
+  const fc=document.getElementById(`fc-${id}`);
+  if(fc){fc.style.opacity='.4';fc.style.transform='scale(.98)';setTimeout(()=>{renderFila();toast('Acionamento concluído')},300)}
+}
 
-  el.innerHTML = pendentes.map(p => `
-    <div class="fila-card ${p.filaStatus}" id="fila-card-${p.id}">
-      <div class="fila-header">
-        <div class="avatar ${avClass(p.nivel)}">${p.initials}</div>
-        <div>
-          <div class="fila-nome">${p.name}</div>
-          <div class="fila-badges">
-            <span class="badge ${p.filaStatus === 'urgente' ? 'badge-red' : p.filaStatus === 'atencao' ? 'badge-amber' : 'badge-green'}">${p.filaStatus === 'urgente' ? 'urgente' : p.filaStatus === 'atencao' ? 'atenção' : 'normal'}</span>
-            <span class="badge badge-blue">momento ${p.momento}/${p.totalMomentos}</span>
-            <span class="badge badge-gray">score ${p.score}</span>
-          </div>
-        </div>
-      </div>
-      <div class="fila-motivo"><i class="ti ti-info-circle" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>${p.filaMotivo}</div>
-      <div class="msg-box">
-        <div class="msg-text">${p.filaMensagem}</div>
-      </div>
-      <div class="resposta-box" id="resposta-${p.id}">
-        <i class="ti ti-message-2" style="font-size:16px;flex-shrink:0"></i>
-        <span id="resposta-text-${p.id}"></span>
-      </div>
-      <div class="fila-actions" id="actions-${p.id}">
-        <button class="btn btn-primary" onclick="enviarMensagem('${p.id}')">
-          <i class="ti ti-brand-whatsapp"></i> Enviar
-        </button>
-        <button class="btn btn-secondary" onclick="editarMensagem('${p.id}')">
-          <i class="ti ti-edit"></i> Editar
-        </button>
-        <button class="btn btn-secondary" onclick="openPatient('${p.id}')">
-          <i class="ti ti-user"></i> Ver perfil
-        </button>
-      </div>
+function renderPac(){
+  const search=(document.getElementById('sinput')?.value||'').toLowerCase();
+  const list=S.pacientes.filter(p=>{const ms=p.name.toLowerCase().includes(search);const mf=cFilter==='todos'||(cFilter==='risco'&&p.nivel==='baixo')||(cFilter==='alto'&&p.nivel==='alto');return ms&&mf;});
+  const el=document.getElementById('plist');if(!el)return;
+  if(!list.length){el.innerHTML='<div class="empty"><i class="ti ti-user-x"></i>Nenhum paciente encontrado.</div>';return}
+  el.innerHTML=list.map(p=>`<div class="prow" onclick="openP('${p.id}')"><div class="av ${aC(p.nivel)}">${p.initials}</div><div class="pinfo"><div class="pname">${p.name}</div><div class="pmeta">${p.especialidade} · momento ${p.momento}/${p.totalMomentos} do protocolo</div></div><span class="badge ${bC(p.nivel)}" style="margin-right:12px">${nL(p.nivel)}</span><div class="sbar-w"><div class="sbar-bg"><div class="sbar-f" style="width:${p.score}%;background:${sC(p.score)}"></div></div><div class="snum">${p.score}/100</div></div></div>`).join('');
+}
+
+function filterP(){renderPac()}
+function setF(f,el){cFilter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');renderPac()}
+
+function renderAlertas(){
+  const al=S.pacientes.filter(p=>p.alertaTipo&&!S.alertasResolvidos.includes(p.id));
+  const b=document.getElementById('badge-alertas');b.textContent=al.length;b.style.display=al.length?'':'none';
+  const el=document.getElementById('alist');if(!el)return;
+  if(!al.length){el.innerHTML='<div class="empty"><i class="ti ti-circle-check"></i>Nenhum alerta pendente.</div>';return}
+  const labels={evasao:'Risco de evasão',renovacao:'Renovação próxima',upsell:'Oportunidade de upsell',protocolo:'Protocolo pendente'};
+  const bc={evasao:'br',renovacao:'ba',upsell:'bg',protocolo:'br'};
+  const dc={evasao:'var(--red)',renovacao:'var(--amber)',upsell:'var(--green)',protocolo:'var(--red)'};
+  el.innerHTML=al.map(p=>`<div class="prow"><div class="adot" style="background:${dc[p.alertaTipo]}"></div><div class="pinfo" onclick="openP('${p.id}')" style="cursor:pointer"><div class="pname">${labels[p.alertaTipo]} — ${p.name}</div><div class="pmeta">Score ${p.score} · ${p.especialidade}</div></div><div style="display:flex;gap:8px;align-items:center"><span class="badge ${bc[p.alertaTipo]}">${labels[p.alertaTipo]}</span><button class="bico" onclick="resolverA('${p.id}')" title="Marcar como resolvido"><i class="ti ti-check"></i></button></div></div>`).join('');
+}
+
+function resolverA(id){if(!S.alertasResolvidos.includes(id))S.alertasResolvidos.push(id);saveS(S);renderAlertas();renderDash();toast('Alerta marcado como resolvido')}
+
+function renderSemana(){
+  const total=S.pacientes.reduce((a,p)=>a+p.historico.length,0);
+  const comR=S.pacientes.reduce((a,p)=>a+p.historico.filter(h=>h.resposta).length,0);
+  const taxa=total?Math.round((comR/total)*100):0;
+  const todos=S.pacientes.flatMap(p=>p.historico.map(h=>({...h,pname:p.name,pid:p.id,initials:p.initials,nivel:p.nivel})));
+  document.getElementById('semana-c').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px">
+      <div class="d7stat"><div class="d7num">${total}</div><div class="d7lbl">Acionamentos realizados</div></div>
+      <div class="d7stat"><div class="d7num" style="color:var(--green)">${comR}</div><div class="d7lbl">Respostas recebidas</div></div>
+      <div class="d7stat"><div class="d7num" style="color:${taxa>=70?'var(--green)':taxa>=40?'var(--amber)':'var(--red)'}">${taxa}%</div><div class="d7lbl">Taxa de resposta</div></div>
     </div>
-  `).join('');
-}
-
-function enviarMensagem(id, msgCustom) {
-  const p = STATE.pacientes.find(x => x.id === id);
-  if (!p) return;
-  const msg = msgCustom || p.filaMensagem;
-
-  const respostas = {
-    marcos: 'Oi! Que bom saber! Estou me sentindo muito bem mesmo, os resultados têm aparecido. Podemos conversar sobre os próximos passos sim!',
-    camila: 'Olá! Sim, adoraria conversar. Posso falar amanhã às 14h?',
-    leticia: 'Oi! Obrigada pelo contato! Tô adorando, mas tenho uma dúvida sobre a alimentação no final de semana...',
-    roberto: 'Olá... É que tive uns problemas de trabalho e acabei deixando de lado. Me sinto mal por isso.'
-  };
-
-  p.filaEnviado = true;
-  saveState(STATE);
-
-  const el = document.getElementById(`resposta-${id}`);
-  const txt = document.getElementById(`resposta-text-${id}`);
-  if (el && txt) {
-    txt.textContent = `Paciente respondeu: "${respostas[id] || 'Mensagem recebida!'}"`;
-    el.classList.add('show');
-  }
-
-  const actions = document.getElementById(`actions-${id}`);
-  if (actions) {
-    actions.innerHTML = `
-      <button class="btn btn-secondary" onclick="marcarConcluido('${id}')">
-        <i class="ti ti-check"></i> Marcar como concluído
-      </button>
-      <span style="font-size:12px;color:var(--text-3);align-self:center"><i class="ti ti-clock" style="font-size:13px;vertical-align:-2px"></i> Aguardando resposta</span>
-    `;
-  }
-
-  showToast(`Mensagem enviada para ${p.name}`);
-  renderDashboard();
-}
-
-function editarMensagem(id) {
-  const p = STATE.pacientes.find(x => x.id === id);
-  if (!p) return;
-  openModal(p.filaMensagem, (msg) => {
-    p.filaMensagem = msg;
-    saveState(STATE);
-    enviarMensagem(id, msg);
-  });
-}
-
-function marcarConcluido(id) {
-  const card = document.getElementById(`fila-card-${id}`);
-  if (card) {
-    card.style.opacity = '0.4';
-    card.style.transform = 'scale(0.98)';
-    setTimeout(() => {
-      renderFila();
-      showToast('Acionamento concluído');
-    }, 300);
-  }
-}
-
-// ── PACIENTES ──
-function renderPatientList() {
-  const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
-  const list = STATE.pacientes.filter(p => {
-    const ms = p.name.toLowerCase().includes(search);
-    const mf = currentFilter === 'todos' || (currentFilter === 'risco' && p.nivel === 'baixo') || (currentFilter === 'alto' && p.nivel === 'alto');
-    return ms && mf;
-  });
-  const el = document.getElementById('patientList');
-  if (!el) return;
-  if (!list.length) {
-    el.innerHTML = '<div class="empty"><i class="ti ti-user-x"></i>Nenhum paciente encontrado.</div>';
-    return;
-  }
-  el.innerHTML = list.map(p => `
-    <div class="patient-row" onclick="openPatient('${p.id}')">
-      <div class="avatar ${avClass(p.nivel)}">${p.initials}</div>
-      <div class="patient-info">
-        <div class="patient-name">${p.name}</div>
-        <div class="patient-meta">${p.especialidade} · momento ${p.momento}/${p.totalMomentos} do protocolo</div>
-      </div>
-      <span class="badge ${badgeClass(p.nivel)}" style="margin-right:12px">${nivelLabel(p.nivel)}</span>
-      <div class="score-wrap">
-        <div class="score-bar-bg"><div class="score-bar-fill" style="width:${p.score}%;background:${scoreColor(p.score)}"></div></div>
-        <div class="score-num">${p.score}/100</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function filterPatients() { renderPatientList(); }
-
-function setFilter(f, el) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
-  renderPatientList();
-}
-
-// ── ALERTAS ──
-function renderAlertas() {
-  const alertas = STATE.pacientes.filter(p => p.alertaTipo && !STATE.alertasResolvidos.includes(p.id));
-  const badge = document.getElementById('badge-alertas');
-  badge.textContent = alertas.length;
-  badge.style.display = alertas.length ? '' : 'none';
-
-  const el = document.getElementById('alertas-list');
-  if (!el) return;
-  if (!alertas.length) {
-    el.innerHTML = '<div class="empty"><i class="ti ti-circle-check"></i>Nenhum alerta pendente.</div>';
-    return;
-  }
-
-  const labels = { evasao: 'Risco de evasão', renovacao: 'Renovação próxima', upsell: 'Oportunidade de upsell', protocolo: 'Protocolo pendente' };
-  const bclass = { evasao: 'badge-red', renovacao: 'badge-amber', upsell: 'badge-green', protocolo: 'badge-red' };
-  const dotColor = { evasao: 'var(--red)', renovacao: 'var(--amber)', upsell: 'var(--green)', protocolo: 'var(--red)' };
-
-  el.innerHTML = alertas.map(p => `
-    <div class="patient-row" id="alerta-row-${p.id}">
-      <div class="alert-dot" style="background:${dotColor[p.alertaTipo]}"></div>
-      <div class="patient-info" onclick="openPatient('${p.id}')" style="cursor:pointer">
-        <div class="patient-name">${labels[p.alertaTipo]} — ${p.name}</div>
-        <div class="patient-meta">Score ${p.score} · ${p.especialidade}</div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span class="badge ${bclass[p.alertaTipo]}">${labels[p.alertaTipo]}</span>
-        <button class="btn-icon" onclick="resolverAlerta('${p.id}')" title="Marcar como resolvido"><i class="ti ti-check"></i></button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function resolverAlerta(id) {
-  if (!STATE.alertasResolvidos.includes(id)) STATE.alertasResolvidos.push(id);
-  saveState(STATE);
-  renderAlertas();
-  renderDashboard();
-  showToast('Alerta marcado como resolvido');
-}
-
-// ── PERFIL ──
-function renderPerfil(p) {
-  const protocExec = p.momentos.filter(m => m.status === 'done').length;
-  const ic = momentoIcon;
-
-  document.getElementById('perfilContent').innerHTML = `
-    <div class="profile-header">
-      <div class="profile-avatar-lg ${avClass(p.nivel)}">${p.initials}</div>
-      <div style="flex:1">
-        <div class="profile-name">${p.name}</div>
-        <div class="profile-sub">${p.especialidade}</div>
-        <div class="profile-stats">
-          <span class="profile-stat"><i class="ti ti-calendar"></i> Desde ${p.inicio}</span>
-          <span class="profile-stat"><i class="ti ti-calendar-due"></i> Plano até ${p.fim}</span>
-          <span class="profile-stat"><i class="ti ti-circle-check" style="color:var(--green)"></i> ${protocExec}/${p.totalMomentos} momentos executados</span>
-        </div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:11px;color:var(--text-3);margin-bottom:4px">score de engajamento</div>
-        <div style="font-family:var(--font-display);font-size:40px;color:${scoreColor(p.score)};line-height:1">${p.score}</div>
-        <div style="font-size:11px;color:var(--text-3)">/100</div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-title" style="margin-bottom:12px">Protocolo — momento ${p.momento} de ${p.totalMomentos}</div>
-      <div class="proto-track">
-        ${p.momentos.map(m => `<div class="proto-seg ${m.status === 'done' ? 'done' : m.status === 'risk' ? 'risk' : m.status === 'current' || m.status === 'pending' ? 'current' : 'future'}" title="${m.label}"></div>`).join('')}
-      </div>
-      <div class="proto-label">${protocExec} de ${p.totalMomentos} momentos realizados</div>
-      <div class="momento-list">
-        ${p.momentos.map(m => {
-          const icon = momentoIcon(m.status);
-          return `<div class="momento-item">
-            <div class="momento-icon ${icon.cls}"><i class="ti ${icon.icon}"></i></div>
-            <div class="momento-info">
-              <div class="momento-label">${m.label}</div>
-              ${m.resposta ? `<div class="momento-desc">${m.resposta}</div>` : ''}
-              <div class="momento-date">${m.data}</div>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>
-
     <div class="card">
-      <div class="card-title" style="margin-bottom:12px">Análise da IA</div>
-      <div class="ia-box">
-        <div class="ia-label"><i class="ti ti-brain"></i> resumo do paciente</div>
-        <div class="ia-text">${p.ia}</div>
+      <div class="card-hdr"><div class="card-ttl">Histórico de acionamentos — últimos 7 dias</div></div>
+      ${todos.length?todos.map(h=>`<div class="hist-item"><div class="av ${aC(h.nivel)}" style="width:32px;height:32px;font-size:11px;flex-shrink:0">${h.initials}</div><div class="hinfo"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><div class="hlabel">${h.pname}</div><span class="badge bb" style="font-size:10px">${h.momentoLabel}</span>${h.resposta?'<span class="badge bg" style="font-size:10px">respondeu</span>':'<span class="badge bgr" style="font-size:10px">sem resposta</span>'}</div><div class="hmsg">"${h.msg}"</div>${h.resposta?`<div class="hresp"><i class="ti ti-message-2" style="font-size:13px;flex-shrink:0;margin-top:1px"></i><span>"${h.resposta}"</span></div>`:''} ${h.respostaIA?`<div class="hia"><i class="ti ti-brain" style="font-size:12px;flex-shrink:0;margin-top:1px"></i><span>${h.respostaIA}</span></div>`:''}</div><div class="hdate">${h.data}<br>${h.hora}</div></div>`).join(''):'<div class="empty"><i class="ti ti-message-off"></i>Nenhum acionamento registrado ainda.<br>Envie mensagens pela fila do dia para ver o histórico aqui.</div>'}
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-ttl">Acionamentos por paciente</div></div>
+      ${S.pacientes.map(p=>`<div class="d7row" onclick="openP('${p.id}')"><div class="av ${aC(p.nivel)}" style="width:32px;height:32px;font-size:11px">${p.initials}</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${p.name}</div><div style="font-size:11px;color:var(--text-3)">${p.historico.length} acionamento${p.historico.length!==1?'s':''} · ${p.historico.filter(h=>h.resposta).length} com resposta</div></div><span class="badge ${bC(p.nivel)}">${nL(p.nivel)}</span></div>`).join('')}
+    </div>`;
+}
+
+function renderPerfil(p){
+  const exec=p.momentos.filter(m=>m.status==='done').length;
+  document.getElementById('perfil-c').innerHTML=`
+    <div class="prof-hdr">
+      <div class="pav-lg ${aC(p.nivel)}">${p.initials}</div>
+      <div style="flex:1"><div class="prof-name">${p.name}</div><div class="prof-sub">${p.especialidade}</div>
+        <div class="prof-stats">
+          <span class="pstat"><i class="ti ti-calendar"></i>Desde ${p.inicio}</span>
+          <span class="pstat"><i class="ti ti-calendar-due"></i>Plano até ${p.fim}</span>
+          <span class="pstat"><i class="ti ti-circle-check" style="color:var(--green)"></i>${exec}/${p.totalMomentos} momentos executados</span>
+          <span class="pstat"><i class="ti ti-message-2"></i>${p.historico.length} acionamento${p.historico.length!==1?'s':''} registrado${p.historico.length!==1?'s':''}</span>
+        </div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
-        <button class="btn btn-primary" onclick="openModal(\`${p.filaMensagem.replace(/`/g,"'")}\`, (msg) => { showToast('Mensagem enviada para ${p.name}'); })">
-          <i class="ti ti-brand-whatsapp"></i> Enviar mensagem
-        </button>
-        ${p.alertaTipo && !STATE.alertasResolvidos.includes(p.id) ? `
-          <button class="btn btn-secondary" onclick="resolverAlerta('${p.id}')">
-            <i class="ti ti-check"></i> Resolver alerta
-          </button>` : ''}
+      <div style="text-align:right"><div style="font-size:11px;color:var(--text-3);margin-bottom:4px">score de engajamento</div><div style="font-family:var(--display);font-size:40px;color:${sC(p.score)};line-height:1">${p.score}</div><div style="font-size:11px;color:var(--text-3)">/100</div></div>
+    </div>
+    <div class="tabs" id="ptabs">
+      <div class="tab active" onclick="switchTab('proto',this)">Protocolo</div>
+      <div class="tab" onclick="switchTab('hist',this)">Histórico de contatos (${p.historico.length})</div>
+      <div class="tab" onclick="switchTab('analise',this)">Análise da IA</div>
+    </div>
+    <div id="tab-proto">
+      <div class="card">
+        <div class="card-ttl" style="margin-bottom:12px">Momentos do protocolo — D+1 a renovação</div>
+        <div class="proto-track">${p.momentos.map(m=>`<div class="pseg ${m.status==='done'?'done':m.status==='risk'?'risk':m.status==='current'||m.status==='pending'?'cur':'fut'}" title="${m.label}"></div>`).join('')}</div>
+        <div class="proto-lbl">${exec} de ${p.totalMomentos} momentos realizados</div>
+        ${p.momentos.map(m=>{const ic=mIcon(m.status);return`<div class="mom-item"><div class="micon ${ic.c}"><i class="ti ${ic.i}"></i></div><div><div class="mlabel">${m.label}</div><div class="mpergunta"><i class="ti ti-message-question" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>${m.pergunta}</div>${m.resposta?`<div class="mdesc">${m.resposta}</div>`:''} ${m.respostaIA?`<div class="hia" style="margin-top:4px"><i class="ti ti-brain" style="font-size:12px;flex-shrink:0"></i><span>${m.respostaIA}</span></div>`:''}<div class="mdate">${m.data}</div></div></div>`}).join('')}
       </div>
     </div>
-  `;
+    <div id="tab-hist" style="display:none">
+      <div class="card">
+        <div class="card-hdr"><div class="card-ttl">Histórico de contatos — primeiros 30 dias e além</div></div>
+        ${p.historico.length?p.historico.map(h=>`<div class="hist-item"><div class="hicon"><i class="ti ti-send"></i></div><div class="hinfo"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><div class="hlabel">${h.momentoLabel}</div>${h.resposta?'<span class="badge bg" style="font-size:10px">respondeu</span>':'<span class="badge bgr" style="font-size:10px">sem resposta</span>'}</div><div class="hmsg">"${h.msg}"</div>${h.resposta?`<div class="hresp"><i class="ti ti-message-2" style="font-size:13px;flex-shrink:0;margin-top:1px"></i><span>"${h.resposta}"</span></div>`:''} ${h.respostaIA?`<div class="hia"><i class="ti ti-brain" style="font-size:12px;flex-shrink:0;margin-top:1px"></i><span>${h.respostaIA}</span></div>`:''}</div><div class="hdate">${h.data}<br>${h.hora}</div></div>`).join(''):'<div class="empty"><i class="ti ti-message-off"></i>Nenhum contato registrado ainda.<br>Use a fila do dia para acionar este paciente.</div>'}
+      </div>
+    </div>
+    <div id="tab-analise" style="display:none">
+      <div class="card">
+        <div class="ia-box"><div class="ia-lbl"><i class="ti ti-brain"></i>resumo do paciente</div><div class="ia-txt">${p.ia}</div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+          <button class="btn btn-p" onclick="openModal('${p.filaMensagem.replace(/'/g,"\\'")}',msg=>toast('Mensagem enviada'))"><i class="ti ti-brand-whatsapp"></i>Enviar mensagem</button>
+          ${p.alertaTipo&&!S.alertasResolvidos.includes(p.id)?`<button class="btn btn-s" onclick="resolverA('${p.id}')"><i class="ti ti-check"></i>Resolver alerta</button>`:''}
+        </div>
+      </div>
+    </div>`;
 }
 
-// ── CHARTS ──
-function initCharts() {
-  const c1 = document.getElementById('chartProtocolo');
-  if (c1) new Chart(c1, {
-    type: 'bar',
-    data: {
-      labels: ['Jan', 'Fev', 'Mar', 'Abr'],
-      datasets: [
-        { label: 'Momentos executados (%)', data: [85, 78, 82, 78], backgroundColor: 'rgba(26,158,114,0.85)', borderRadius: 6 },
-        { label: 'Taxa de resposta (%)', data: [72, 65, 70, 68], backgroundColor: 'rgba(26,158,114,0.2)', borderRadius: 6 }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { labels: { font: { size: 11, family: 'DM Sans' }, boxWidth: 10, padding: 12 } } },
-      scales: {
-        y: { min: 0, max: 100, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
-        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
-      }
-    }
-  });
-
-  const c2 = document.getElementById('chartNps');
-  if (c2) new Chart(c2, {
-    type: 'line',
-    data: {
-      labels: ['Jan', 'Fev', 'Mar', 'Abr'],
-      datasets: [{ label: 'Resultado percebido (1–5)', data: [3.2, 3.6, 3.9, 4.1], borderColor: '#1A9E72', backgroundColor: 'rgba(26,158,114,0.08)', tension: 0.4, fill: true, pointRadius: 4, pointBackgroundColor: '#1A9E72', borderWidth: 2 }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { min: 1, max: 5, ticks: { font: { size: 11 }, stepSize: 1 }, grid: { color: 'rgba(0,0,0,0.04)' } },
-        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
-      }
-    }
-  });
+function switchTab(name,el){
+  ['proto','hist','analise'].forEach(t=>{const e=document.getElementById('tab-'+t);if(e)e.style.display='none'});
+  document.querySelectorAll('#ptabs .tab').forEach(t=>t.classList.remove('active'));
+  const tgt=document.getElementById('tab-'+name);if(tgt)tgt.style.display='block';if(el)el.classList.add('active');
 }
 
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  renderDashboard();
-  renderFila();
-  renderAlertas();
-  setTimeout(initCharts, 100);
-});
+function initCharts(){
+  const c1=document.getElementById('cP');
+  if(c1)new Chart(c1,{type:'bar',data:{labels:['Jan','Fev','Mar','Abr'],datasets:[{label:'Momentos executados (%)',data:[85,78,82,78],backgroundColor:'rgba(26,158,114,0.85)',borderRadius:6},{label:'Taxa de resposta (%)',data:[72,65,70,68],backgroundColor:'rgba(26,158,114,0.2)',borderRadius:6}]},options:{responsive:true,plugins:{legend:{labels:{font:{size:11,family:'DM Sans'},boxWidth:10,padding:12}}},scales:{y:{min:0,max:100,ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});
+  const c2=document.getElementById('cE');
+  if(c2)new Chart(c2,{type:'doughnut',data:{labels:['Respondeu rápido','Respondeu com atraso','Não respondeu'],datasets:[{data:[58,27,15],backgroundColor:['#1A9E72','#D4891A','#C0392B'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:11,family:'DM Sans'},padding:16,boxWidth:10}}}}});
+}
 
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+document.addEventListener('DOMContentLoaded',()=>{renderDash();renderFila();renderAlertas();setTimeout(initCharts,100)});
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
 </script>
 </body>
 </html>
